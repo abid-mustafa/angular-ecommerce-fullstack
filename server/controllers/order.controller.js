@@ -3,32 +3,34 @@ const router = express.Router();
 const service = require('../services/order.service');
 
 router.get('/:customerId', async (req, res) => {
-    const items = await service.getOrdersByCustomerId(req.params.customerId);
-    if (items === undefined)
-        res.status(404).send('No orders with orderNumber: ' + req.params.customerId)
-    else
-        res.send(items)
+    try {
+        const orders = await service.getOrdersByCustomerId(req.params.customerId);
+        res.status(200).send(orders);
+    } catch (error) {
+        res.status(500).send('An error occured while getting orders.');
+    }
 });
 
 router.post('/', async (req, res) => {
-    // loop over item's quantity to check if they are available in DB
-    const orderLines = req.body.orderLines;
-    const outOfStock = [];
+    try {
+        const orderLines = req.body.orderLines;
+        const outOfStock = [];
 
-    orderLines.forEach(element => {
-        const stockQuantity = service.getQuantity(element.productId);
+        for (let line of orderLines) {
+            const stock = await service.getQuantity(line.productId);
 
-        if(orderLines.quantity > stockQuantity) {
-            outOfStock.push(element.productId);
+            if (line.quantity > stock.quantity) {
+                outOfStock.push(stock.name);
+            }
         }
-    });
 
-    if (outOfStock.length > 0) {
-        const apiResponse = {
+        console.log('outOfStock==>', outOfStock);
+        if (outOfStock.length > 0) {
+            const apiResponse = {
                 success: false,
-                message: 'Out of stock',
                 data: outOfStock
             };
+            console.log(apiResponse);
             res.send(apiResponse);
         }
         else {
@@ -36,17 +38,22 @@ router.post('/', async (req, res) => {
             const apiResponse = {
                 success: true,
             };
+            console.log(apiResponse);
             res.status(201).send(apiResponse);
+        }
+    } catch (error) {
+        res.status(500).send('An error occured while placing order.');
     }
-
 });
 
 router.get('/get-quantity/:productId', async (req, res) => {
-    console.log('addOrder=>', req.params.productId);
-    const data = await service.getQuantity(req.params.productId);
-    console.log(data);
-
-    res.status(201).send(data);
+    try {
+        const stock = await service.getQuantity(req.params.productId);
+        res.status(200).send(JSON.stringify(stock.quantity));
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('An error occured while adding to cart.');
+    }
 });
 
 module.exports = router

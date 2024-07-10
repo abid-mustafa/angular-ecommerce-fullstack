@@ -11,6 +11,6 @@ module.exports.getConnectionPool = () => {
     return mysqlPool;
 }
 
-module.exports.getConnection = async () => {
-    return await this.mysqlPool.getConnection();
+module.exports.getConnection = () => {
+    return mysqlPool.getConnection();
 }

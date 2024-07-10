@@ -11,7 +11,6 @@ import { ToastrService } from 'ngx-toastr';
 export class ShoppingCartComponent {
   shoppingCart: any;
   total: number = 0;
-  
 
   constructor(private router: Router, private orderService: OrderService, private toastr: ToastrService) { }
 
@@ -21,10 +20,9 @@ export class ShoppingCartComponent {
   }
 
   decrease(product: any) {
-    let cart = this.shoppingCart;
 
-    for (let i = 0; i < cart.length; i++) {
-      const element = cart[i];
+    for (let i = 0; i < this.shoppingCart.length; i++) {
+      const element = this.shoppingCart[i];
 
       if (element.product.id === product.product.id) {
         this.total -= element.product.price;
@@ -37,30 +35,30 @@ export class ShoppingCartComponent {
         break;
       }
     }
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(this.shoppingCart));
   }
 
   async increase(product: any) {
-    const stock = await this.orderService.getQuantity(product.product.id);
+    const stockQuantity = await this.orderService.getQuantity(product.product.id);
 
-    console.log(stock);
-    
-    if (stock.quantity === 0) {
+    if (stockQuantity === 0) {
       this.toastr.warning(product.product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
       return;
     }
 
-    for (let i = 0; i < this.shoppingCart.length; i++) {
-      const element = this.shoppingCart[i];
-
-      if (element.product.id === product.product.id) {
-        this.total += element.product.price;
-        element.quantity += 1;
-        localStorage.setItem('total', JSON.stringify(this.total));
-        break;
+    this.shoppingCart  = this.shoppingCart.map((item:any) => {
+      if (item.product.id === product.product.id) {
+        return {
+          ...item,
+          quantity: item.quantity + 1
+        };
       }
-    }
-
+      return item;
+    });
+    
+    this.total = this.shoppingCart.reduce((sum:number, item:any) => sum + item.product.price * item.quantity, 0);
+    
+    localStorage.setItem('total', JSON.stringify(this.total));
     localStorage.setItem('cart', JSON.stringify(this.shoppingCart));
   }
 

@@ -12,7 +12,7 @@ module.exports.getAllProducts = async () => {
                 p.description AS description,
                 p.price AS price,
                 p.image as image,
-                c.nae AS categoryName
+                c.name AS categoryName
             FROM 
                 products p
             INNER JOIN 

@@ -2,24 +2,25 @@ const { getConnectionPool } = require('../database');
 const db = getConnectionPool();
 
 module.exports.getUserByName = async (name, password) => {
-    const [[records]] = await db.query("SELECT * FROM users WHERE name = ?", [name])
-    console.log(records);
-    return records
-}
-
-module.exports.getAll = async () => {
-    const [records] = await db.query("SELECT * FROM users")
-    return records
+    try {
+        const [[records]] = await db.query("SELECT * FROM users WHERE name = ?", [name])
+        return records;
+    } catch (error) {
+        throw error;
+    }
 }
 
 module.exports.addUser = async (obj) => {
-    const [data] =  await db.query(
-        `INSERT INTO users (name, password)
-         SELECT ?, ?
-         WHERE NOT EXISTS (
-         SELECT 1 FROM users WHERE name = ?
-         )`
-        , [obj.name, obj.password, obj.name]);
-    console.log(data);
-    return data;
+    try {
+        const [records] = await db.query(
+            `INSERT INTO users (name, password)
+             SELECT ?, ?
+             WHERE NOT EXISTS (
+             SELECT 1 FROM users WHERE name = ?
+             )`
+            , [obj.name, obj.password, obj.name]);
+    }
+    catch (error) {
+        throw error;
+    }
 }

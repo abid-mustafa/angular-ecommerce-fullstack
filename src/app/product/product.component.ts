@@ -35,11 +35,9 @@ export class ProductComponent implements OnInit {
   }
 
   async addToCart(product: Product) {
-    const stock = await this.orderService.getQuantity(product.id);
+    const stockQuantity = await this.orderService.getQuantity(product.id);
 
-    console.log(stock);
-
-    if (stock.quantity === 0) {
+    if (stockQuantity === 0) {
       this.toastr.warning(product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
       return;
     }
@@ -55,14 +53,12 @@ export class ProductComponent implements OnInit {
     // boolean to check if object already in cart
     let exists = false;
 
-    for (let i = 0; i < cart.length; i++) {
-      const element = cart[i];
-
+    for (let element of cart) {
       // if object in cart
       if (element.product.id === obj.product.id) {
         // set exists to true and increment quantity
         exists = true;
-        cart[i].quantity += 1;
+        element.quantity += 1;
         break;
       }
     }

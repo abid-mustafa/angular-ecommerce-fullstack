@@ -48,67 +48,70 @@ export class CheckOutComponent {
     const formData = this.checkoutForm.value;
     const customerId = JSON.parse(localStorage.getItem('userid') || '0');
 
-    // if userid in localStorage
-    if (customerId) {
-      this.shoppingCart.forEach((element: any) => {
-        // calculate subtotal for each row
-        const subtotal = element.quantity * element.product.price;
+    this.shoppingCart.forEach((element: any) => {
+      // calculate subtotal for each row
+      const subtotal = element.quantity * element.product.price;
 
-        // add orderLine data of each row
-        orderLines.push({
-          productId: element.product.id,
-          quantity: element.quantity,
-          unitPrice: element.product.price,
-          subtotal
-        });
+      // add orderLine data of each row
+      orderLines.push({
+        productId: element.product.id,
+        quantity: element.quantity,
+        unitPrice: element.product.price,
+        subtotal
+      });
+    });
+
+    // create object to store all the order data
+    const data = {
+      customerId,
+      total: this.total,
+      orderNumber: this.orderNumber,
+      email: formData.email.trim(),
+      address: formData.address.trim(),
+      contact: formData.contact.trim(),
+      orderLines
+    }
+
+    // call addOrder API
+    const response = await this.orderService.addOrder(data);
+
+    console.log(response);
+    
+    // if adding order successful
+    if (response.success) {
+      // Initialize Matomo Ecommerce Order with all the rows
+      this.shoppingCart.forEach((element: any) => {
+        this.tracker.addEcommerceItem(
+          element.product.id.toString(),
+          element.product.name,
+          element.product.categoryName,
+          element.product.price,
+          element.quantity
+        );
       });
 
-      // create object to store all the order data
-      const data = {
-        customerId,
-        total: this.total,
-        orderNumber: this.orderNumber,
-        email: formData.email.trim(),
-        address: formData.address.trim(),
-        contact: formData.contact.trim(),
-        orderLines
-      }
+      // Track the eCommerce order
+      this.tracker.trackEcommerceOrder(this.orderNumber, this.total);
 
-      // call addOrder API
-      const response = await this.orderService.addOrder(data);
+      // clear local storage and reset form
+      localStorage.removeItem('cart');
+      localStorage.removeItem('total');
+      localStorage.removeItem('orderNumber');
+      this.checkoutForm.reset();
 
-      // if adding order successful
-      if (response.success) {
-        // Initialize Matomo Ecommerce Order with all the rows
-        this.shoppingCart.forEach((element: any) => {
-          this.tracker.addEcommerceItem(
-            element.product.id.toString(),
-            element.product.name,
-            element.product.categoryName,
-            element.product.price,
-            element.quantity
-          );
+      // give success notification and reroute to history page
+      this.toastr.success('Order placed successfully', '', { extendedTimeOut: 2000, timeOut: 2000 }).
+        onHidden.subscribe(() => {
+          this.router.navigate(['history']);
         });
-
-        // Track the eCommerce order
-        this.tracker.trackEcommerceOrder(this.orderNumber, this.total);
-
-        // clear local storage and reset form
-        localStorage.removeItem('cart');
-        localStorage.removeItem('total');
-        localStorage.removeItem('orderNumber');
-        this.checkoutForm.reset();
-
-        // give success notification and reroute to history page
-        this.toastr.success('Order placed successfully', '', { extendedTimeOut: 2000, timeOut: 2000 }).
-          onHidden.subscribe(() => {
-            this.router.navigate(['history']);
-          });
-      }
     }
     else {
-      // give failure notification
-      this.toastr.warning('A product was out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
+      const outOfStock = response.data;
+      
+      // give out of stock notification
+      for (let name of outOfStock) {
+        this.toastr.warning(name + ' is out of stock', '', { extendedTimeOut: 1000, timeOut: 1000 });
+      }
     }
   }
 }

@@ -7,32 +7,25 @@ export class AuthInterceptorService implements HttpInterceptor {
     constructor() { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // console.log('Auth interceptor called ==>', JSON.stringify(req));
         return next.handle(req).pipe(tap({
-            // next: (event: HttpEvent<any>) => {
-            //     if (event.type === HttpEventType.Response) {
-            //         console.log('Response data==>', event.status);
-            //     }
-            // },
-            error: (err: any) => {
+            next: (event: HttpEvent<any>) => {
+                if (event.type === HttpEventType.Response) {
+                    // console.log('Response data==>', event.status);
+                }
+            },
+            error: (err) => {
                 if (err instanceof HttpErrorResponse) {
-                    if (err.status === 401) {
-                        alert('Error. Unauthorized access');
+                    console.log(err);
+                    if (err.status === 0) {
+                        alert('Server is down, please try again later.');
+                        return;
                     }
-                    else if (err.status === 404) {
-                        alert('Error. Resource not found');
-                    }
-                    else if (err.status === 0) {
-                        alert('Error. Server is down');
-                    }
-                    else if (err.status === 500) {
-                        alert(err.message);
-                    }
+                    
+                    alert(err.error);
                     localStorage.clear();
                     this.router.navigate(['login']);
                 }
             },
-            // complete: () => console.info('complete');
         }
         ));
     }
