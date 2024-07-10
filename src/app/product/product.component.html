@@ -1,0 +1,30 @@
+<div class="search-bar">
+  <mat-form-field>
+    <mat-label>Search by category</mat-label>
+    <input matInput placeholder="Example: Electronics" [(ngModel)]="searchText">
+  </mat-form-field>
+</div>
+
+<div *ngIf="noProducts">No products at the moment</div>
+
+<ng-container *ngFor="let product of products; let i = index">
+  <ng-container *ngIf="i % 5 == 0">
+    <div class="row">
+      <mat-list *ngFor="let innerProduct of products.slice(i, i + 5) | categoryFilter: searchText.trim()" class="product">
+        <img src="/images/{{innerProduct.image}}" class="product-image" />
+        <div class="product-details">
+          <p>{{innerProduct.name}}</p>
+          <p>{{innerProduct.description}}</p>
+          <p>${{innerProduct.price}}</p>
+          <p>{{innerProduct.categoryName}}</p>
+        </div>
+        <div class="add-to-cart">
+          <button mat-raised-button color="primary" id="add-to-cart-{{innerProduct.id}}" (click)="addToCart(innerProduct)"
+            type="button" matomoClickCategory="Ecommerce" matomoClickAction="AddToCart" matomoClickName={{innerProduct.name}}>
+            Add to cart
+          </button>
+        </div>
+      </mat-list>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,130 @@
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  overflow-x: hidden;
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  overflow-y: auto;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Ensure the form is centered vertically and horizontally */
+.check-out-form {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.shopping-cart-container {
+  background-color: #f1f1f1;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-items {
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.cart-heading {
+  display: flex;
+  justify-content: space-between;
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+}
+
+.cart-item {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-name,
+.cart-item-amount,
+.cart-item-price,
+.cart-item-total-price {
+  flex: 1;
+  text-align: center;
+}
+
+.cart-total {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 18px;
+}
+
+.check-out-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-heading {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+.check-out-button {
+  margin-top: 20px;
+  float: right;
+  text-decoration: none;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.empty-cart-message {
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .split {
+    width: 100%;
+    position: relative;
+  }
+
+  .right {
+    padding-top: 20px;
+  }
+}

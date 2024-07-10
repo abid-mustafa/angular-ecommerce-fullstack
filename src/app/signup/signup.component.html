@@ -1,0 +1,19 @@
+<body>
+    <form [formGroup]="signupForm" class="container">
+        <h1>Signup</h1>
+
+        <mat-form-field class="form-field">
+            <input matInput placeholder="Enter username" formControlName="name" required="true">
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+            <input matInput placeholder="Enter password" formControlName="password" type="password" required="true">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="signup()" type="submit"
+            [disabled]="signupForm.invalid">Register</button>
+
+        <br>
+        <a style="text-align: center; text-decoration: none;" href="login">Already have an account? Login now.</a>
+    </form>
+</body>

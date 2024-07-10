@@ -1,0 +1,55 @@
+<div class="split left">
+  <div *ngIf="shoppingCart.length === 0" class="empty-cart-message">
+    Cart is empty
+  </div>
+
+  <div class="shopping-cart-container" *ngIf="shoppingCart.length > 0">
+    <h3 class="heading">Order details</h3>
+    <h4 class="heading">Order Number: {{ orderNumber }}</h4>
+    <div class="cart-items">
+      <div class="cart-heading">
+        <div class="cart-item-name">Name</div>
+        <div class="cart-item-amount">Quantity</div>
+        <div class="cart-item-price">Unit Price</div>
+        <div class="cart-item-total-price">Total Price</div>
+      </div>
+
+      <div *ngFor="let item of shoppingCart; let i = index">
+        <div *ngIf="item.quantity > 0" class="cart-item">
+          <div class="cart-item-details">
+            <div class="cart-item-name">{{ item.product.name }}</div>
+            <div class="cart-item-amount">{{ item.quantity }}</div>
+            <div class="cart-item-price">${{ item.product.price }}</div>
+            <div class="cart-item-total-price">${{ item.product.price * item.quantity }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-total">
+        Grand Total: ${{ total }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="split right">
+  <div class="check-out-form">
+    <h3 class="heading">Personal Details</h3>
+    <form [formGroup]="checkoutForm" class="check-out-container">
+      <mat-form-field>
+        <input matInput placeholder="Enter email" formControlName="email" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Enter address" formControlName="address" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Enter contact" formControlName="contact" required>
+      </mat-form-field>
+
+      <button class="check-out-button" color="accent" mat-flat-button (click)="checkOut()" type="submit"
+        [disabled]="checkoutForm.invalid || !total">Checkout</button>
+    </form>
+  </div>
+</div>

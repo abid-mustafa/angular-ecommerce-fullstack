@@ -1,0 +1,25 @@
+.toolbar-buttons {
+  display: flex;
+  align-items: center;
+  /* Align buttons vertically in the toolbar */
+}
+
+.fill-remaining-space {
+  flex-grow: 1;
+  /* Pushes "Welcome user" span to the right */
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  /* Aligns icon and text vertically in the span */
+  margin-right: 16px;
+  /* Optional: Add margin for spacing between text and right edge */
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  float: right;
+  background-color: lightcoral;
+}

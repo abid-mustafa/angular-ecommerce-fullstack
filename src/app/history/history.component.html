@@ -1,0 +1,35 @@
+<div class="search-bar">
+    <mat-form-field>
+        <mat-label>Search by order number</mat-label>
+        <input matInput [(ngModel)]="searchText">
+    </mat-form-field>
+</div>
+
+<p *ngIf="noOrders" style="text-align: center;">You have no orders placed yet</p>
+
+<div class="table-container" *ngIf="!noOrders">
+    <table mat-table [dataSource]="orders | orderNumberFilter : searchText.trim()" class="mat-elevation-z8">
+
+        <!-- Order Number Column -->
+        <ng-container matColumnDef="orderNumber">
+            <th mat-header-cell *matHeaderCellDef>Order Number</th>
+            <td mat-cell *matCellDef="let element">{{element.orderNumber}}</td>
+        </ng-container>
+
+        <!-- Total Column -->
+        <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let element">${{element.total}}</td>
+        </ng-container>
+
+        <!-- Timestamp Column -->
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{element.timestamp | date:'short'}}</td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
