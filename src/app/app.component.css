@@ -1,0 +1,6 @@
+.support-button {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    z-index: 1000;
+}

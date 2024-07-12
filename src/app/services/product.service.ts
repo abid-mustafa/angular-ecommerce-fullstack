@@ -15,7 +15,7 @@ export class ProductService {
 
     getProducts(): any {
         return lastValueFrom(
-            this.http.get<Product[]>
+            this.http.get<any[]>
                 (this.url, { withCredentials: true })
         );
     }

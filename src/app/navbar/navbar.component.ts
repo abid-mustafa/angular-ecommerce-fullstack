@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
-import { MatomoTracker } from 'ngx-matomo-client';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,9 +12,8 @@ export class NavbarComponent {
   username: any;
   showNavbar: any;
   response: any;
-  private readonly = inject(MatomoTracker);
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router,private chatService: ChatService) { }
 
   ngOnInit() {
     // subscribe to router events observable and manage routes 
@@ -25,10 +23,14 @@ export class NavbarComponent {
         // update boolean variable to show navbar
         this.showNavbar = true;
         this.username = JSON.parse(localStorage.getItem('username') || '');
+        this.chatService.emitChatEvent(true);
+        this.chatService.emitSupportEvent(false);
       }
       else {
         // update boolean variable to hide navbar
         this.showNavbar = false;
+        this.chatService.emitChatEvent(true);
+        this.chatService.emitSupportEvent(true);
       }
     })
   }

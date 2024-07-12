@@ -15,10 +15,10 @@
     <div *ngFor="let item of shoppingCart; let i = index">
       <div class="cart-item">
         <div class="cart-item-details">
-          <div class="cart-item-name">{{ item.product.name }}</div>
-          <div class="cart-item-amount">{{ item.quantity }}</div>
-          <div class="cart-item-price">${{ item.product.price }}</div>
-          <div class="cart-item-total-price">${{ item.product.price * item.quantity }}</div>
+          <div>{{ item.product.name }}</div>
+          <div>{{ item.quantity }}</div>
+          <div>${{ item.product.price }}</div>
+          <div>${{ item.product.price * item.quantity }}</div>
           <div class="delete-button">
             <button mat-flat-button class="increase-button" (click)="increase(item)" type="button"
               matomoClickCategory="Ecommerce" matomoClickAction="IncreaseItem" matomoClickName={{item.product.name}}>
@@ -39,6 +39,7 @@
     </div>
   </div>
   <div>
-    <button mat-flat-button class="checkout-button" color="accent" [disabled]="!total" (click)="goToCheckout()">Proceed to checkout</button>
+    <button mat-flat-button class="checkout-button" color="accent" [disabled]="!total" (click)="goToCheckout()">Proceed
+      to checkout</button>
   </div>
 </div>

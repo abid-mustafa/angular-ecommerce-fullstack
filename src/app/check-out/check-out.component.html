@@ -36,16 +36,16 @@
   <div class="check-out-form">
     <h3 class="heading">Personal Details</h3>
     <form [formGroup]="checkoutForm" class="check-out-container">
-      <mat-form-field>
-        <input matInput placeholder="Enter email" formControlName="email" required>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Enter email" formControlName="email" required maxlength="25">
       </mat-form-field>
 
-      <mat-form-field>
-        <input matInput placeholder="Enter address" formControlName="address" required>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Enter address" formControlName="address" required maxlength="45">
       </mat-form-field>
 
-      <mat-form-field>
-        <input matInput placeholder="Enter contact" formControlName="contact" required>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Enter contact" formControlName="contact" required maxlength="12">
       </mat-form-field>
 
       <button class="check-out-button" color="accent" mat-flat-button (click)="checkOut()" type="submit"

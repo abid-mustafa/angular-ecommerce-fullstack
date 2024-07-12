@@ -16,12 +16,10 @@ export class AuthInterceptorService implements HttpInterceptor {
             error: (err) => {
                 if (err instanceof HttpErrorResponse) {
                     console.log(err);
-                    if (err.status === 0) {
+                    if (err.status === 0)
                         alert('Server is down, please try again later.');
-                        return;
-                    }
-                    
-                    alert(err.error);
+                    else 
+                        alert(err.error);
                     localStorage.clear();
                     this.router.navigate(['login']);
                 }

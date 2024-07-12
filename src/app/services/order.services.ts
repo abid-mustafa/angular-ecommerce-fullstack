@@ -1,5 +1,5 @@
 import { lastValueFrom } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -21,10 +21,20 @@ export class OrderService {
     }
 
     // GET request to get orders based on userid
-    getOrders(data: any): any {
+    getOrdersCount(customerId: number): any {
         return lastValueFrom(
             this.http.get<any>
-                (this.url + data, { withCredentials: true })
+                (this.url + 'orders-count/' + customerId, { withCredentials: true })
+        );
+    }
+
+    // GET request to get orders based on userid
+    getOrders(limit: number, offset: number, customerId: number): any {
+        const params = new HttpParams().set('limit', limit).append('offset', offset).append('customerId', customerId);
+
+        return lastValueFrom(
+            this.http.get<any>
+                (this.url, { params, withCredentials: true })
         );
     }
 

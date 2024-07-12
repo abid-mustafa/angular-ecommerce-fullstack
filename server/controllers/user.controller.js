@@ -35,6 +35,8 @@ router.post('/login', async (req, res) => {
             res.status(200).send(apiResponse);
         }
     } catch (error) {
+        console.log(req.session);
+        console.log(error);
         res.status(500).send('An error occured while logging in');
     }
 });
@@ -58,6 +60,7 @@ router.get('/logout', (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         res.status(500).send('An error occured while logging out');
     }
 });
@@ -86,7 +89,18 @@ router.post('/signup', async (req, res) => {
         }
         res.status(201).send(apiResponse);
     } catch (error) {
+        console.log(error);
         res.status(500).send('An error occured while signing up');
+    }
+});
+
+router.get('/', async (req, res) => {
+    try {
+        const users = await service.getAllUsers();
+        res.status(200).send(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('An error occured while getting users');
     }
 })
 

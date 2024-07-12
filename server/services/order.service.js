@@ -28,9 +28,28 @@ module.exports.addOrder = async (obj) => {
     }
 }
 
-module.exports.getOrdersByCustomerId = async (customerId) => {
+module.exports.getOrdersByCustomerId = async (limit, offset, customerId) => {
     try {
-        const [records] = await dbConnectionPool.query("SELECT orderNumber, total, timestamp FROM orders WHERE customerId = ?",
+        const [records] = await dbConnectionPool.query(`
+            SELECT *
+            FROM orders
+            WHERE customerId = ?
+            LIMIT ? OFFSET ?;
+            `,
+            [customerId, limit, offset]);
+        return records
+    } catch (error) {
+        throw error;
+    }
+}
+
+module.exports.getOrdersCountByCustomerId = async (customerId) => {
+    try {
+        const [[records]] = await dbConnectionPool.query(`
+            SELECT COUNT(*) AS count
+            FROM orders
+            WHERE customerId = ?
+            `,
             [customerId]);
         return records
     } catch (error) {
@@ -49,7 +68,7 @@ module.exports.getQuantity = async (productId) => {
             INNER JOIN 
                 stocks s ON p.id = s.productId
             WHERE p.id = ?
-            `,[productId]);
+            `, [productId]);
         return records
     } catch (error) {
         throw error;

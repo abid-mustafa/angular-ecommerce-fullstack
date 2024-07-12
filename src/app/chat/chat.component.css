@@ -1,0 +1,90 @@
+.chat-popup {
+    position: fixed;
+    bottom: 85px;
+    right: 100px;
+    border: 1px solid #ddd;
+    color: black;
+    z-index: 10;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #3f51b5;
+    color: white;
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px 10px 0 0;
+}
+
+.chat-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.chat-close {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 10px;
+}
+
+.chat-body {
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-footer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.chat-send {
+    color: #3f51b5;
+    background-color: white;
+}
+
+.chat-send mat-icon {
+    font-size: 24px;
+}
+
+.chat-popup.open {
+    display: block;
+}
+
+/* Styles for chat messages */
+.chat-body p {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    word-wrap: break-word;
+    max-width: fit-content;
+    font-size: medium;
+}
+
+.chat-body p.user {
+    background-color: lightcyan; /* User message background color */
+    text-align: right;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+.chat-body p.support {
+    background-color: #f1f1f1; /* Support message background color */
+    text-align: left;
+    margin-right: auto;
+    margin-left: 0;
+}

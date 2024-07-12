@@ -13,8 +13,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatPaginatorModule} from '@angular/material/paginator';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 import { LoginComponent } from './login/login.component';
 import { ProductComponent } from './product/product.component';
@@ -27,6 +30,17 @@ import { OrderNumberPipe } from './ordernumber.pipe';
 import { MatomoModule, MatomoRouteDataInterceptor, MatomoRouterModule } from 'ngx-matomo-client';
 import { SignupComponent } from './signup/signup.component';
 import { HistoryComponent } from './history/history.component';
+import { ChatComponent } from './chat/chat.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FooterComponent } from './footer/footer.component';
+
+const socketIoConfig: SocketIoConfig = {
+  url: 'http://localhost:3000',
+  options: {
+    auth:
+      { token: 'some secret' }
+  }
+}
 
 @NgModule({
   declarations: [
@@ -40,6 +54,8 @@ import { HistoryComponent } from './history/history.component';
     OrderNumberPipe,
     SignupComponent,
     HistoryComponent,
+    ChatComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +68,8 @@ import { HistoryComponent } from './history/history.component';
     MatToolbarModule,
     MatIconModule,
     MatTableModule,
+    MatSlideToggleModule,
+    MatPaginatorModule,
     ToastrModule.forRoot(),
     MatomoModule
       .forRoot
@@ -63,6 +81,8 @@ import { HistoryComponent } from './history/history.component';
       interceptors: [MatomoRouteDataInterceptor],
       trackPageTitle: false,
     }),
+    SocketIoModule.forRoot(socketIoConfig),
+    NgxPaginationModule
   ],
   providers: [
     provideAnimationsAsync(),

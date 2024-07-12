@@ -19,6 +19,17 @@ module.exports.addUser = async (obj) => {
              SELECT 1 FROM users WHERE name = ?
              )`
             , [obj.name, obj.password, obj.name]);
+            return records;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+module.exports.getAllUsers = async () => {
+    try {
+        const [records] = await db.query('SELECT * FROM users');
+        return records;
     }
     catch (error) {
         throw error;

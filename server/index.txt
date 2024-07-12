@@ -1,0 +1,16 @@
+
+// middleware
+app.use(cors({
+    origin: 'http://localhost:4200',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Enable this if you need to send cookies or other credentials with requests
+}));
+
+app.use(session({
+    resave: false,
+    secret: 'some secret',
+    cookie: { secure: false, maxAge: 10000000 },
+    httpOnly: true,
+    saveUninitialized: false,
+    store
+}));
