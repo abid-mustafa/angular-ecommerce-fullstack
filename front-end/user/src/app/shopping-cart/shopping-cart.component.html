@@ -9,25 +9,23 @@
       <div class="cart-item-amount">Quantity</div>
       <div class="cart-item-price">Unit Price</div>
       <div class="cart-item-total-price">Total Price</div>
-      <div class="delete-button"></div>
     </div>
 
     <div *ngFor="let item of shoppingCart; let i = index">
       <div class="cart-item">
         <div class="cart-item-details">
-          <div>{{ item.product.name }}</div>
+          <div>{{ item.name }}</div>
           <div>{{ item.quantity }}</div>
-          <div>${{ item.product.price }}</div>
-          <div>${{ item.product.price * item.quantity }}</div>
-          <div class="delete-button">
+          <div>${{ item.price }}</div>
+          <div>${{ item.price * item.quantity }}</div>
+          <div class="buttons">
             <button mat-flat-button class="increase-button" (click)="increase(item)" type="button"
-              matomoClickCategory="Ecommerce" matomoClickAction="IncreaseItem" matomoClickName={{item.product.name}}>
-              <mat-icon>keyboard_arrow_up</mat-icon>
+              matomoClickCategory="Ecommerce" matomoClickAction="IncreaseItem" matomoClickName={{item.name}}>
+              <mat-icon>add</mat-icon>
             </button>
-            <br>
             <button mat-flat-button class="decrease-button" (click)="decrease(item)" type="button"
-              matomoClickCategory="Ecommerce" matomoClickAction="DecreaseItem" matomoClickName={{item.product.name}}>
-              <mat-icon>keyboard_arrow_down</mat-icon>
+              matomoClickCategory="Ecommerce" matomoClickAction="DecreaseItem" matomoClickName={{item.name}}>
+              <mat-icon>remove</mat-icon>
             </button>
           </div>
         </div>

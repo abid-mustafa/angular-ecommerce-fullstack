@@ -30,7 +30,6 @@ export class ChatComponent {
     }
 
     this.socket.fromEvent('receive').subscribe((message: any) => {
-      console.log('from socket==>', message);
       if (message.room ===  this.room) {
         this.messages.push(message);
       }
@@ -41,7 +40,6 @@ export class ChatComponent {
     this.messages = await this.chatService.getChat(room);
     this.room = room;
     localStorage.setItem('current-room', JSON.stringify(room));
-    console.log(this.messages);
   }
 
   send() {
@@ -51,6 +49,7 @@ export class ChatComponent {
         senderId: this.userid,
         room: this.room,
         text: this.message,
+        timestamp : new Date().toISOString().slice(0, 19).replace('T', ' ')
       };
 
       this.socket.emit('send', newMessage);

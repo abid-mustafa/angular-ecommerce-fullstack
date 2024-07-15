@@ -1,7 +1,6 @@
-import { category } from './../category';
 import { Component } from '@angular/core';
-import { getCategories, insertCategory } from '../services/categories.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { CategoryService } from '../services/categories.service';
 
 @Component({
   selector: 'app-categories',
@@ -9,38 +8,43 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrl: './categories.component.css',
 })
 export class CategoryComponent {
-  categories: category[] = []
+  categories: any[] = []
   displayedColumns: string[] = ['name', 'description'];
-  categoryForm! : FormGroup
+  categoryForm!: FormGroup
 
   // Form stats
   success = false
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private categoryService: CategoryService) {
     this.categoryForm = this.fb.group({
       name: '',
       description: ''
-  })
+    })
   }
 
   async ngOnInit() {
-    this.categories = await getCategories();
-
+    const response = await this.categoryService.getCategories();
+    if (response.success) {
+      this.categories = response.data;
+    }
+    else {
+      console.log('error getting products');
+    }
   }
 
   async addCategory() {
     console.log('add category clicked');
     console.log(this.categoryForm.value);
-    
-    let data = this.categoryForm.value
-      
-      this.success = await insertCategory(data.name.trim(), data.description.trim());
 
-      if (this.success){
-        this.categoryForm.reset();
-        alert('category added successfuly');
-      }
-      else
-        alert('category not added successfuly');
+    let data = this.categoryForm.value
+
+    const response = await this.categoryService.addCategory(data);
+
+    if (response.success) {
+      alert('category added successfuly')
+    }
+    else {
+      alert('error while adding category')
+    }
   }
 }

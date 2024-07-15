@@ -1,4 +1,4 @@
-<form [formGroup]="productForm" class="container" [hidden]="success">
+<form [formGroup]="productForm" class="container">
     <hr>
   
     <mat-form-field>
@@ -10,7 +10,15 @@
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput placeholder="Enter price" value="0" formControlName="price" required="true">
+        <input matInput placeholder="Enter price" type="number" value="0" formControlName="price" required="true">
+    </mat-form-field>
+    
+    <mat-form-field>
+        <input matInput placeholder="Enter image link" formControlName="image" required="true">
+    </mat-form-field>
+    
+    <mat-form-field>
+        <input matInput placeholder="Enter quantity" type="number" value="0" formControlName="quantity" required="true">
     </mat-form-field>
     
     <mat-form-field  id="category-select">
@@ -21,10 +29,5 @@
         }
     </mat-select>
     </mat-form-field>
-
-    <!-- <mat-form-field class="form-field">
-        <input matInput placeholder="Enter category id" value="0" formControlName="categoryId" required="true">
-    </mat-form-field> -->
-  
-    <a mat-button color="primary" (click)="addProduct()" type="submit" [disabled]="productForm.invalid" id="product-create">Add Product</a>
+    <button mat-button color="primary" (click)="addProduct()" type="submit" [disabled]="productForm.invalid" id="product-create">Add Product</button>
   </form>

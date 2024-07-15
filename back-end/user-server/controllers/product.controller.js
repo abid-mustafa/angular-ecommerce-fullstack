@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const service = require('../services/product.service');
-const { getAllJSDocTagsOfKind } = require('typescript');
-const { asapScheduler } = require('rxjs');
 
 router.get('/', async (req, res, next) => {
     try {

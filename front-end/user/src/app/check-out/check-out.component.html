@@ -17,10 +17,10 @@
       <div *ngFor="let item of shoppingCart; let i = index">
         <div *ngIf="item.quantity > 0" class="cart-item">
           <div class="cart-item-details">
-            <div class="cart-item-name">{{ item.product.name }}</div>
+            <div class="cart-item-name">{{ item.name }}</div>
             <div class="cart-item-amount">{{ item.quantity }}</div>
-            <div class="cart-item-price">${{ item.product.price }}</div>
-            <div class="cart-item-total-price">${{ item.product.price * item.quantity }}</div>
+            <div class="cart-item-price">${{ item.price }}</div>
+            <div class="cart-item-total-price">${{ item.price * item.quantity }}</div>
           </div>
         </div>
       </div>

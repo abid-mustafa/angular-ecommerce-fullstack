@@ -1,4 +1,6 @@
 
 # Dependency directories
-server/node_modules/
-server/.vscode
+user-server/node_modules/
+user-server/.vscode
+admin-server/node_modules/
+admin-server/.vscode

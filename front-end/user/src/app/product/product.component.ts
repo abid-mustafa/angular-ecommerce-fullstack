@@ -2,7 +2,6 @@ import { OrderService } from './../services/order.services';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { Product } from '../models/product';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -34,7 +33,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  async addToCart(product: Product) {
+  async addToCart(product: any) {
     const stockQuantity = await this.orderService.getQuantity(product.id);
 
     if (stockQuantity === 0) {
@@ -43,10 +42,15 @@ export class ProductComponent implements OnInit {
     }
 
     // object to product and quantity
-    const obj = {
-      product,
-      quantity: 1
-    }
+    // const obj = {
+    //   product,
+    //   quantity: 1
+    // }
+
+    console.log(product.id);
+    
+
+    product.quantity = 1;
 
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -55,7 +59,7 @@ export class ProductComponent implements OnInit {
 
     for (let element of cart) {
       // if object in cart
-      if (element.product.id === obj.product.id) {
+      if (element.id === product.id) {
         // set exists to true and increment quantity
         exists = true;
         element.quantity += 1;
@@ -65,12 +69,12 @@ export class ProductComponent implements OnInit {
 
     // if not exists, push into cart
     if (!exists) {
-      cart.push(obj);
+      cart.push(product);
     }
 
     // get total from local storage and add price of product
     let total = JSON.parse(localStorage.getItem('total') || '0');
-    total += obj.product.price;
+    total += product.price;
     localStorage.setItem('total', JSON.stringify(total));
 
     // update cart and give notification

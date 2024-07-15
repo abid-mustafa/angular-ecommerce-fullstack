@@ -50,13 +50,13 @@ export class CheckOutComponent {
 
     this.shoppingCart.forEach((element: any) => {
       // calculate subtotal for each row
-      const subtotal = element.quantity * element.product.price;
+      const subtotal = element.quantity * element.price;
 
       // add orderLine data of each row
       orderLines.push({
-        productId: element.product.id,
+        productId: element.id,
         quantity: element.quantity,
-        unitPrice: element.product.price,
+        unitPrice: element.price,
         subtotal
       });
     });
@@ -75,17 +75,15 @@ export class CheckOutComponent {
     // call addOrder API
     const response = await this.orderService.addOrder(data);
 
-    console.log(response);
-    
     // if adding order successful
     if (response.success) {
       // Initialize Matomo Ecommerce Order with all the rows
       this.shoppingCart.forEach((element: any) => {
         this.tracker.addEcommerceItem(
-          element.product.id.toString(),
-          element.product.name,
-          element.product.categoryName,
-          element.product.price,
+          element.id.toString(),
+          element.name,
+          element.categoryName,
+          element.price,
           element.quantity
         );
       });

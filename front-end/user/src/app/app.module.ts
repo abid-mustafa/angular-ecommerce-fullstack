@@ -35,7 +35,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FooterComponent } from './footer/footer.component';
 
 const socketIoConfig: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: 'http://localhost:3010',
   options: {
     auth:
       { token: 'some secret' }

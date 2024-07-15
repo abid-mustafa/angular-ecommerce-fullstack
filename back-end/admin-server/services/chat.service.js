@@ -23,7 +23,8 @@ module.exports.getChatRooms = async () => {
 
 module.exports.addChat = async (obj) => {
     try {
-        await db.query('INSERT INTO chats (senderId, room, text) VALUES (?, ?, ?)', [obj.senderId, obj.room, obj.text]);
+        await db.query('INSERT INTO chats (senderId, room, text, timestamp) VALUES (?, ?, ?, ?)',
+            [obj.senderId, obj.room, obj.text, obj.timestamp]);
     }
     catch (error) {
         throw error;

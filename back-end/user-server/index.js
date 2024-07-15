@@ -13,8 +13,6 @@ const { getStore } = require('./services/store.service');
 const store = getStore();
 const { getConnectionPool } = require('./database');
 const db = getConnectionPool();
-const { createServer } = require('node:http');
-const { Server } = require('socket.io');
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -55,43 +53,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/chats', chatRoutes);
 
-// Create an HTTP server instance
-const server = createServer(app);
-
-// Initialize Socket.IO with the HTTP server
-const io = new Server(server, {
-    cors: {
-        origin: '*'
-    }
-});
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('joinRoomAdmin', (chats) => {
-        for (let index = 0; index < chats.length; index++) {
-            const element = chats[index];
-            socket.join(element.room);
-            console.log('admin joined ', element.room);
-        }
-    });
-
-    socket.on('joinRoomUser', (chat) => {
-        socket.join(chat);
-        console.log('user joined ', chat);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-
-    socket.on('send', (message) => {
-        console.log(socket.rooms);
-        console.log(message);
-        socket.to(message.room).emit('receive', message);
-    });
-});
-
 // Global error handler
 app.use((err, req, res, next) => {
     console.log('Error caught in global error handler:', err);
@@ -102,6 +63,6 @@ app.use((err, req, res, next) => {
 db.query("SELECT 1")
     .then(() => {
         console.log('Database connection successful');
-        server.listen(3000, () => console.log('Server started at 3000'));
+        app.listen(3000, () => console.log('Server started at 3000'));
     })
     .catch(err => console.log('Database connection unsuccessful', err));

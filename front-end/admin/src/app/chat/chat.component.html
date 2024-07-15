@@ -5,7 +5,7 @@
     <div class="chat-body">
         <ng-container *ngFor="let message of messages">
             <p [ngClass]="{'user': message.senderId === userid, 'support': message.senderId !== userid}">
-                {{ message.text }}
+                {{ message.text }} {{message.timestamp | date:'HH:MM'}}
             </p>
         </ng-container>
     </div>
@@ -13,9 +13,6 @@
         <mat-form-field class="chat-input">
             <input matInput placeholder="Enter message..." [(ngModel)]="message" (keydown.enter)="send()">
         </mat-form-field>
-        <!-- <button mat-icon-button class="chat-send" (click)="send()">
-            <mat-icon>send</mat-icon>
-        </button> -->
     </div>
 </div>
 

@@ -40,7 +40,7 @@ export class LoginComponent {
 
       this.loginForm.reset();
       
-      this.router.navigate(['chats']);
+      this.router.navigate(['products']);
     }
     else {
       // if login failed, show notification

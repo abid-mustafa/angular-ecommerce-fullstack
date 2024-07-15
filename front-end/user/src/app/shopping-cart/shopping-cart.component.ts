@@ -24,8 +24,8 @@ export class ShoppingCartComponent {
     for (let i = 0; i < this.shoppingCart.length; i++) {
       const element = this.shoppingCart[i];
 
-      if (element.product.id === product.product.id) {
-        this.total -= element.product.price;
+      if (element.id === product.id) {
+        this.total -= element.price;
         element.quantity -= 1;
         localStorage.setItem('total', JSON.stringify(this.total));
 
@@ -39,15 +39,15 @@ export class ShoppingCartComponent {
   }
 
   async increase(product: any) {
-    const stockQuantity = await this.orderService.getQuantity(product.product.id);
+    const stockQuantity = await this.orderService.getQuantity(product.id);
 
     if (stockQuantity === 0) {
-      this.toastr.warning(product.product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
+      this.toastr.warning(product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
       return;
     }
 
     this.shoppingCart  = this.shoppingCart.map((item:any) => {
-      if (item.product.id === product.product.id) {
+      if (item.id === product.id) {
         return {
           ...item,
           quantity: item.quantity + 1
@@ -56,7 +56,7 @@ export class ShoppingCartComponent {
       return item;
     });
     
-    this.total = this.shoppingCart.reduce((sum:number, item:any) => sum + item.product.price * item.quantity, 0);
+    this.total = this.shoppingCart.reduce((sum:number, item:any) => sum + item.price * item.quantity, 0);
     
     localStorage.setItem('total', JSON.stringify(this.total));
     localStorage.setItem('cart', JSON.stringify(this.shoppingCart));

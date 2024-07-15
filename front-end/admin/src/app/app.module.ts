@@ -26,7 +26,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 const socketIoConfig: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: 'http://localhost:3010',
   options: {
     auth:
       { token: 'some secret' }

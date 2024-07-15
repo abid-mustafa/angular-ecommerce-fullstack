@@ -1,93 +1,29 @@
-import { product } from '../product';
-import axios from "axios";
+import { lastValueFrom, Observable, Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
 
-// GET REQUEST
-export async function getProducts() {
-  let items: product[] = [];
-        try {
-          const response =  await axios.get(
-            'http://localhost:3000/api/products/'
-          );
-          const data = response.data;
+@Injectable({
+  providedIn: 'root'
+})
 
-          for (let i=0 ; i<data.length; i++) {
-                items[i] = new product(
-                    data[i].product_id,
-                    data[i].product_name,
-                    data[i].product_description,
-                    data[i].product_price,
-                    data[i].category_name
-                  )
-          }
-        }
-        catch (err){
-          console.log(err)
-        }
-        return items
-}
+export class ProductService {
+  private url = 'http://localhost:3010/api/products/';
 
-// GET REQUEST
-export async function getLatestProductId() {
-        try {
-          const response =  await axios.get(
-            'http://localhost:3000/api/products/last'
-          )
-          const data = response.data;
+  constructor(private http: HttpClient) { }
 
-          const lastProductId = data[0].id
-            return lastProductId
-        }
-        catch (err){
-          console.log(err)
-          return -1
-        }
-}
+  // POST request to add order
+  addProduct(data: any): any {
+    return lastValueFrom(
+      this.http.post<any>
+        (this.url, data, { withCredentials: true })
+    );
+  }
 
-// DELETE REQUEST
-export async function deleteProduct(id: number) {
-        try {
-          const response =  await axios.delete(
-            'http://localhost:3000/api/products/' + id
-          )
-        }
-        catch (err){
-          console.log(err)
-        }
-}
-
-// PUT REQUEST
-export async function updateProduct(updatedProduct: product) {
-  console.log('in put request', updatedProduct)
-        try {
-          const response =  await axios.put(
-            'http://localhost:3000/api/products/' + updatedProduct.id, {
-              name: updatedProduct.name,
-              description: updatedProduct.description,
-              price: updatedProduct.price,
-              categoryName: updatedProduct.categoryName
-            }
-          )
-        }
-        catch (err){
-          console.log(err)
-        }
-}
-
-// POST REQUEST
-export async function insertProduct(name: string, description: string, price: number, categoryName: string) {
-  try {
-    const response = await axios.post(
-      'http://localhost:3000/api/products/', {
-        name: name,
-        description: description,
-        price: price,
-        categoryName: categoryName
-      }
-      )
-    return true
-    }
-    catch (err){
-      console.log(err)
-      return false
+  // GET request to get orders based on userid
+  getProducts(): any {
+    return lastValueFrom(
+      this.http.get<any>
+        (this.url, { withCredentials: true })
+    );
   }
 }

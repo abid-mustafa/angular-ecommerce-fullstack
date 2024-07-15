@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product';
 import {  lastValueFrom } from 'rxjs';
 
 @Injectable({

@@ -44,19 +44,9 @@
   text-align: center;
 }
 
-.increase-button, .decrease-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 4px;
-  margin: 0 3px; /* Reduced margin */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
 .increase-button:hover, .decrease-button:hover {
-  background-color: #0056b3;
+  background-color: rgb(120, 106, 230);
+  color: white;
 }
 
 .cart-total {
@@ -72,4 +62,9 @@
 
 .mat-icon {
   vertical-align: middle;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
 }

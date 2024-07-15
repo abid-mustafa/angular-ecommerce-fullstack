@@ -1,6 +1,7 @@
 import { Socket } from 'ngx-socket-io';
 import { Component } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -25,9 +26,8 @@ export class ChatComponent {
       this.socket.emit('joinRoomUser', this.username);
 
       this.socket.fromEvent('receive').subscribe((message) => {
-        console.log('from socket==>', message);
         this.messages.push(message);
-      })
+      });
     }
   }
 
@@ -37,8 +37,8 @@ export class ChatComponent {
         senderId: this.userid,
         room: this.username,
         text: this.message,
+        timestamp : new Date().toISOString().slice(0, 19).replace('T', ' ')
       };
-
 
       this.socket.emit('send', newMessage);
       this.messages.push(newMessage);
