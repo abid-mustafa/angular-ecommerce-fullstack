@@ -1,0 +1,9 @@
+<app-navbar></app-navbar>
+<div class="main-container">
+    <router-outlet></router-outlet>
+    <button mat-fab color="primary" class="support-button" (click)="hideChat = false" [hidden]="hideSupportIcon">
+        <mat-icon>support_agent</mat-icon>
+    </button>
+    <app-chat [hidden]="hideChat"></app-chat>
+</div>
+<app-footer></app-footer>

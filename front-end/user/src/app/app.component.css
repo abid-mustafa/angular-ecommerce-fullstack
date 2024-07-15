@@ -1,0 +1,13 @@
+.support-button {
+    position: fixed;
+    bottom: 150px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+}

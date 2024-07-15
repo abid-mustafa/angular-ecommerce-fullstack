@@ -1,0 +1,42 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  
+  .product {
+    padding: 10px;
+    flex: 1 0 15%;
+    max-width: 15%;
+    margin: 8px;
+    border: 1px solid black;
+    border-radius: .5rem;
+  }
+  
+  @media (max-width: 1200px) {
+    .product {
+      flex: 1 0 20%;
+      max-width: 20%;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .product {
+      flex: 1 0 30%;
+      max-width: 30%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .product {
+      flex: 1 0 45%;
+      max-width: 45%;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .product {
+      flex: 1 0 90%;
+      max-width: 90%;
+    }
+  }

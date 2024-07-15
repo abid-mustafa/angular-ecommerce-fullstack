@@ -1,0 +1,26 @@
+<div class="chat">
+    <div class="chat-header">
+        <span class="chat-title">{{ room }}</span>
+    </div>
+    <div class="chat-body">
+        <ng-container *ngFor="let message of messages">
+            <p [ngClass]="{'user': message.senderId === userid, 'support': message.senderId !== userid}">
+                {{ message.text }}
+            </p>
+        </ng-container>
+    </div>
+    <div class="chat-footer">
+        <mat-form-field class="chat-input">
+            <input matInput placeholder="Enter message..." [(ngModel)]="message" (keydown.enter)="send()">
+        </mat-form-field>
+        <!-- <button mat-icon-button class="chat-send" (click)="send()">
+            <mat-icon>send</mat-icon>
+        </button> -->
+    </div>
+</div>
+
+<div class="select-chats">
+    <ng-container *ngFor="let chat of chats">
+        <p (click)="getChat(chat.room)">{{chat.room}} </p>
+    </ng-container>
+</div>

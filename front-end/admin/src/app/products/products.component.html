@@ -1,0 +1,19 @@
+<br>
+<button mat-fab color="primary" (click)="addProduct()">
+  <mat-icon>add</mat-icon>
+</button>
+
+<div *ngIf="products.length == 0">No products at the moment</div>
+
+<ng-container *ngFor="let product of products; let i = index">
+  <ng-container *ngIf="i % 6 == 0">
+    <div class="row" style="display: flex; flex-wrap: wrap; margin-bottom: 16px;">
+      <mat-list *ngFor="let innerProduct of products.slice(i, i + 6)" class="product" style="flex: 1 0 15%; max-width: 15%; margin: 8px;">
+        <h3 matListItemTitle>{{innerProduct.name}}</h3>
+        <p>{{innerProduct.description}}</p>
+        <p>${{innerProduct.price}}</p>
+        <p>{{innerProduct.categoryName}}</p>
+      </mat-list>
+    </div>
+  </ng-container>
+</ng-container>
