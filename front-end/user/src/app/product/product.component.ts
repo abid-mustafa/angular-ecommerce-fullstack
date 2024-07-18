@@ -1,13 +1,15 @@
+import { CartService } from './../services/cart.service';
 import { OrderService } from './../services/order.services';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { ToastrService } from 'ngx-toastr';
+import { Product } from '../models/product.model';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrl: './product.component.css'
+  styleUrl: './product.component.css',
 })
 
 export class ProductComponent implements OnInit {
@@ -15,7 +17,7 @@ export class ProductComponent implements OnInit {
   searchText = '';
   noProducts = false;
 
-  constructor(private router: Router, private productService: ProductService, private orderService: OrderService, private toastr: ToastrService) { }
+  constructor(private router: Router, private productService: ProductService, private orderService: OrderService, private cartService: CartService, private notificationService: NotificationService) { }
 
   async ngOnInit() {
     // API call to get Products
@@ -29,56 +31,22 @@ export class ProductComponent implements OnInit {
       this.noProducts = !this.products.length;
     }
     else {
-      this.toastr.error('Please try again later', response.message, { extendedTimeOut: 2000, timeOut: 2000 });
+      this.notificationService.toaster('error', 'Please try again later', response.message, 2000);
     }
   }
 
-  async addToCart(product: any) {
-    const stockQuantity = await this.orderService.getQuantity(product.id);
+  async addToCart(product: Product) {
 
-    if (stockQuantity === 0) {
-      this.toastr.warning(product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
-      return;
+    const quantity = await this.orderService.getQuantity(product.id);
+
+    if (quantity > 0) {
+      this.cartService.increaseQuantity(product);
+      this.cartService.emitEvent();
+      this.cartService.emitQuantityEvent();
+      this.notificationService.toaster('success', '', product.name + ' added to cart', 1000);
     }
-
-    // object to product and quantity
-    // const obj = {
-    //   product,
-    //   quantity: 1
-    // }
-
-    console.log(product.id);
-    
-
-    product.quantity = 1;
-
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-    // boolean to check if object already in cart
-    let exists = false;
-
-    for (let element of cart) {
-      // if object in cart
-      if (element.id === product.id) {
-        // set exists to true and increment quantity
-        exists = true;
-        element.quantity += 1;
-        break;
-      }
+    else {
+      this.notificationService.toaster('warning', '', product.name + ' is out of stock', 1000);
     }
-
-    // if not exists, push into cart
-    if (!exists) {
-      cart.push(product);
-    }
-
-    // get total from local storage and add price of product
-    let total = JSON.parse(localStorage.getItem('total') || '0');
-    total += product.price;
-    localStorage.setItem('total', JSON.stringify(total));
-
-    // update cart and give notification
-    localStorage.setItem('cart', JSON.stringify(cart));
-    this.toastr.success(product.name + ' added to cart', '', { extendedTimeOut: 1000, timeOut: 1000 });
   }
 }

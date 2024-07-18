@@ -1,9 +1,20 @@
-<app-navbar></app-navbar>
 <div class="main-container">
+    @if (showNavbar) {
+    <app-navbar></app-navbar>
+    }
     <router-outlet></router-outlet>
-    <button mat-fab color="primary" class="support-button" (click)="hideChat = !hideChat;" *ngIf="!hideSupportIcon">
+    <app-shopping-cart class="shopping-cart"></app-shopping-cart>
+
+    @if (showNavbar) {
+    <button mat-fab class="support-button" (click)="updateChat()">
         <mat-icon>support_agent</mat-icon>
     </button>
-    <app-chat *ngIf="!hideChat" ></app-chat>
+    }
+
+    @if(showChat) {
+    <app-chat></app-chat>
+    }
 </div>
+@if (showFooter) {
 <app-footer></app-footer>
+}

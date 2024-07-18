@@ -1,70 +1,67 @@
-.shopping-cart-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+.cart-popup {
+  border: 1px solid #ddd;
+  color: black;
+  width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  animation:  mymove 0.2s normal;
+  animation-timing-function: linear;
 }
 
-.empty-cart-message {
-  padding: 20px;
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
+@keyframes mymove {
+  from {transform: translateX(500px);}
+  to {transform: translateX(0px);}
 }
 
 .cart-items {
-  background-color: #f1f1f1;
   border-radius: 8px;
-  padding: 20px; /* Reduced padding */
-}
-
-.cart-heading, .cart-item {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  align-items: center;
-  padding: 2.5px 5px; /* Reduced padding */
+  padding: 0;
+  text-align: center;
 }
 
 .cart-heading {
-  background-color: #007bff;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.5fr;
+  background-color: #673ab7;
   color: white;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  font-weight: bold;
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
 }
 
 .cart-item {
-  background-color: white;
+  background-color: #f1f1f1;
   border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s ease;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: center;
 }
 
 .cart-item-details {
   display: contents;
-  text-align: center;
 }
 
-.increase-button:hover, .decrease-button:hover {
-  background-color: rgb(120, 106, 230);
-  color: white;
-}
-
-.cart-total {
-  margin-top: 10px; /* Reduced margin */
-  text-align: right;
-  font-size: 18px;
-}
-
-.checkout-button {
-  margin-top: 10px; /* Reduced margin */
-  float: right;
-}
-
-.mat-icon {
-  vertical-align: middle;
+.cart-item-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .buttons {
-  display: flex;
-  flex-direction: row;
+  min-width: unset !important;
+  width: 30px;
+  margin: 5px;
+  padding: 0;
+}
+
+.buttons:hover {
+  background-color: #673ab7;
+  color: white;
+}
+
+.checkout-button {
+  margin: 10px;
+  float: right;
 }

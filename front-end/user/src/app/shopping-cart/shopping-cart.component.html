@@ -1,43 +1,37 @@
-<div *ngIf="shoppingCart.length === 0" class="empty-cart-message">
-  Cart is empty
-</div>
+<div @fadein  *ngIf="showCart" class="cart-popup" id="mycartPopup">
+  <div class="shopping-cart-container">
+    <div class="cart-items">
+      <div class="cart-heading">
+        <div>Name</div>
+        <div>Quantity</div>
+        <div>Total</div>
+      </div>
 
-<div class="shopping-cart-container" *ngIf="shoppingCart.length > 0">
-  <div class="cart-items">
-    <div class="cart-heading">
-      <div class="cart-item-name">Name</div>
-      <div class="cart-item-amount">Quantity</div>
-      <div class="cart-item-price">Unit Price</div>
-      <div class="cart-item-total-price">Total Price</div>
-    </div>
+      <div *ngFor="let item of shoppingCart">
+        <div class="cart-item">
+          <div class="cart-item-details">
+            <div>{{ item.name }}</div>
+            <div>{{ item.quantity }}</div>
+            <div>$ {{ item.quantity * item.price }}</div>
+          </div>
+          <div class="cart-item-buttons">
+            <button mat-stroked-button class="buttons" (click)="decrease(item)" type="button"
+              matomoClickCategory="Ecommerce" matomoClickAction="DecreaseItem" matomoClickName={{item.name}}>-</button>
 
-    <div *ngFor="let item of shoppingCart; let i = index">
-      <div class="cart-item">
-        <div class="cart-item-details">
-          <div>{{ item.name }}</div>
-          <div>{{ item.quantity }}</div>
-          <div>${{ item.price }}</div>
-          <div>${{ item.price * item.quantity }}</div>
-          <div class="buttons">
-            <button mat-flat-button class="increase-button" (click)="increase(item)" type="button"
-              matomoClickCategory="Ecommerce" matomoClickAction="IncreaseItem" matomoClickName={{item.name}}>
-              <mat-icon>add</mat-icon>
-            </button>
-            <button mat-flat-button class="decrease-button" (click)="decrease(item)" type="button"
-              matomoClickCategory="Ecommerce" matomoClickAction="DecreaseItem" matomoClickName={{item.name}}>
-              <mat-icon>remove</mat-icon>
+            <button mat-stroked-button class="buttons" (click)="increase(item)" type="button"
+              matomoClickCategory="Ecommerce" matomoClickAction="IncreaseItem" matomoClickName={{item.name}}>+</button>
+
+            <button mat-stroked-button class="buttons" (click)="remove(item)" type="button"
+              matomoClickCategory="Ecommerce" matomoClickAction="RemoveItem" matomoClickName={{item.name}}>
+              <mat-icon style="margin: 4px;">delete</mat-icon>
             </button>
           </div>
         </div>
       </div>
+      <h3 style="text-align: right; margin: 10px;">Total : $ {{ total }} </h3>
     </div>
-
-    <div class="cart-total">
-      Grand Total: ${{ total }}
-    </div>
-  </div>
-  <div>
-    <button mat-flat-button class="checkout-button" color="accent" [disabled]="!total" (click)="goToCheckout()">Proceed
-      to checkout</button>
+    <button mat-flat-button color="accent" class="checkout-button" disabled="{{!shoppingCart.length}}"
+      (click)="goToCheckout()"> Proceed to
+      Checkout</button>
   </div>
 </div>

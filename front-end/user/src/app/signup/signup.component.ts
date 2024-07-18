@@ -2,10 +2,9 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { MatomoTracker } from 'ngx-matomo-client';
-import { tap } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +15,7 @@ export class SignupComponent {
   signupForm!: FormGroup
   private readonly tracker = inject(MatomoTracker);
 
-  constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     if (localStorage.getItem('username') && localStorage.getItem('userid')) {
@@ -49,8 +48,7 @@ export class SignupComponent {
       this.router.navigate(['products']);
     }
     else {
-      // alert('A user already exists with that username');
-      this.toastr.error('A user already exists with that username', '', { extendedTimeOut: 2000, timeOut: 2000 });
+      this.notificationService.toaster('error', 'A user already exists with that username', '', 2000);
     }
 
   }

@@ -2,10 +2,13 @@
     <div class="chat-header">
         <span class="chat-title">Support Chat</span>
         <span class="chat-close" (click)="closeChat()">
-             <mat-icon>close</mat-icon>
+            <mat-icon>close</mat-icon>
         </span>
     </div>
     <div class="chat-body">
+        @if( messages.length === 0) {
+        <div style="text-align: center;">No messages yet.</div>
+        }
         <ng-container *ngFor="let message of messages">
             <p [ngClass]="{'user': message.senderId === userid, 'support': message.senderId !== userid}">
                 {{ message.text }} {{message.timestamp | date:'HH:MM'}}

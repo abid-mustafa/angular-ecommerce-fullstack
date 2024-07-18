@@ -1,69 +1,59 @@
+import { DisplayService } from '../services/display.service';
+import { CartService } from '../services/cart.service';
 import { OrderService } from './../services/order.services';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CartItem } from '../models/cart-item.model';
 
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
-  styleUrl: './shopping-cart.component.css'
+  styleUrl: './shopping-cart.component.css',
 })
 export class ShoppingCartComponent {
-  shoppingCart: any;
-  total: number = 0;
+  shoppingCart: CartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
+  total: number = JSON.parse(localStorage.getItem('total') || '0');
+  showCart = JSON.parse(localStorage.getItem('showCart') || '0');
 
-  constructor(private router: Router, private orderService: OrderService, private toastr: ToastrService) { }
+  constructor(private router: Router, private cartService: CartService, private displayService: DisplayService, private orderService: OrderService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.shoppingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    this.total = JSON.parse(localStorage.getItem('total') || '0')
-  }
+    const cartObservable = this.cartService.getCartObservable();
 
-  decrease(product: any) {
-
-    for (let i = 0; i < this.shoppingCart.length; i++) {
-      const element = this.shoppingCart[i];
-
-      if (element.id === product.id) {
-        this.total -= element.price;
-        element.quantity -= 1;
-        localStorage.setItem('total', JSON.stringify(this.total));
-
-        if (element.quantity === 0) {
-          this.shoppingCart.splice(i, 1);
-        }
-        break;
-      }
-    }
-    localStorage.setItem('cart', JSON.stringify(this.shoppingCart));
-  }
-
-  async increase(product: any) {
-    const stockQuantity = await this.orderService.getQuantity(product.id);
-
-    if (stockQuantity === 0) {
-      this.toastr.warning(product.name + ' out of stock', '', { extendedTimeOut: 2000, timeOut: 2000 });
-      return;
-    }
-
-    this.shoppingCart  = this.shoppingCart.map((item:any) => {
-      if (item.id === product.id) {
-        return {
-          ...item,
-          quantity: item.quantity + 1
-        };
-      }
-      return item;
+    cartObservable.subscribe((data: any) => {
+      this.total = data.total;
+      this.shoppingCart = data.cart;
     });
-    
-    this.total = this.shoppingCart.reduce((sum:number, item:any) => sum + item.price * item.quantity, 0);
-    
-    localStorage.setItem('total', JSON.stringify(this.total));
-    localStorage.setItem('cart', JSON.stringify(this.shoppingCart));
+
+    this.displayService.getCartObservable().subscribe(data => this.showCart = data);
+  }
+
+  decrease(product: CartItem) {
+    this.cartService.decreaseQuantity(product);
+    this.cartService.emitEvent();
+    this.cartService.emitQuantityEvent();
+  }
+
+  async increase(product: CartItem) {
+    const quantity = await this.orderService.getQuantity(product.id);
+
+    if (quantity > 0) {
+      this.cartService.increaseQuantity(product);
+      this.cartService.emitEvent();
+      this.cartService.emitQuantityEvent();
+    }
+  }
+
+  remove(product: CartItem) {
+    this.cartService.removeFromCart(product);
+    this.cartService.emitEvent();
+    this.cartService.emitQuantityEvent();
   }
 
   goToCheckout() {
-    localStorage.setItem('total', JSON.stringify(this.total));
+    localStorage.setItem('showCart', JSON.stringify(false));
+    this.showCart = false;
     this.router.navigate(['check-out']);
   }
 }

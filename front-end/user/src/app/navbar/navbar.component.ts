@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { NotificationService } from '../services/notification.service';
+import { CartService } from '../services/cart.service';
+import { DisplayService } from '../services/display.service';
+import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
-import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,29 +12,27 @@ import { ChatService } from '../services/chat.service';
 })
 export class NavbarComponent {
   username: any;
-  showNavbar: any;
-  response: any;
+  quantity = 0;
 
-  constructor(private userService: UserService, private router: Router,private chatService: ChatService) { }
+  constructor(private userService: UserService, private router: Router, private displayService: DisplayService, private cartService: CartService, private notificationService: NotificationService) { }
 
   ngOnInit() {
-    // subscribe to router events observable and manage routes 
-    this.router.events.subscribe((data: any) => {
-      // if user data in local storage, assume user logged in
-      if (localStorage.getItem('username') && localStorage.getItem('userid')) {
-        // update boolean variable to show navbar
-        this.showNavbar = true;
-        this.username = JSON.parse(localStorage.getItem('username') || '');
-        this.chatService.emitChatEvent(true);
-        this.chatService.emitSupportEvent(false);
-      }
-      else {
-        // update boolean variable to hide navbar
-        this.showNavbar = false;
-        this.chatService.emitChatEvent(true);
-        this.chatService.emitSupportEvent(true);
-      }
-    })
+    if (localStorage.getItem('username')) {
+      this.username = JSON.parse(localStorage.getItem('username') || '');
+    }
+    const quantityObserver = this.cartService.getQuantityObservable();
+
+    quantityObserver.subscribe(data => {
+      this.quantity = data;
+    });
+  }
+
+  updateCart() {
+    let showCart: boolean = JSON.parse(localStorage.getItem('showCart') || '0');
+    showCart = !showCart;
+    localStorage.setItem('showCart', JSON.stringify(showCart));
+
+    this.displayService.emitCartEvent();
   }
 
   async logOut() {
@@ -41,12 +41,14 @@ export class NavbarComponent {
 
     // if logout successful, hide navbar, clear local storage and go to login
     if (response.success) {
-      this.showNavbar = false;
+      this.cartService.clear();
       localStorage.clear();
+      this.displayService.emitLogoutEvent();
       this.router.navigate(['login']);
     }
     else {
-      alert('Error while logging out');
+      // alert('An error occured while logging out.')
+      this.notificationService.emitErrorEvent('An error occured while logging out.', '');
     }
   }
 

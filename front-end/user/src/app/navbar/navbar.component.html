@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" *ngIf="showNavbar">
+<mat-toolbar color="primary">
   <!-- Buttons aligned to the left -->
   <div class="toolbar-buttons">
     <button mat-button routerLink="products">Products</button>
@@ -16,8 +16,9 @@
     <mat-icon>eco</mat-icon> Welcome {{ username }}
   </span>
 
-  <button mat-icon-button routerLink="shopping-cart">
+  <button mat-icon-button class="cart-button" (click)="updateCart()">
     <mat-icon>shopping_cart</mat-icon>
+    <span class="quantity-badge">{{ quantity }}</span>
   </button>
 
   <button class="logout-button" color="warn" mat-flat-button (click)="logOut()">

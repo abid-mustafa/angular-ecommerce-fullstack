@@ -2,9 +2,11 @@
 @import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 html,
-body,app-root {
+body,
+app-root {
     height: 100%;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
 }
@@ -12,5 +14,5 @@ body,app-root {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background: linear-gradient(to right , #a1c4fd, #c2e9fb);
+    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
 }

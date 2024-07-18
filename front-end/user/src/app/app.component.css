@@ -1,8 +1,17 @@
 .support-button {
+    background-color: white;
+    color: #673ab7;
     position: fixed;
-    bottom: 150px;
-    right: 10px;
-    z-index: 1000;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.shopping-cart {
+    top: 65px;
+    right: 0px;
+    position: fixed;
+    z-index: 10;
 }
 
 .main-container {

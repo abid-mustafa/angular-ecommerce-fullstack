@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ProductComponent } from './product/product.component';
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckOutComponent } from './check-out/check-out.component';
 import { AuthGuard } from './services/auth-guard.guard';
 import { SignupComponent } from './signup/signup.component';
@@ -11,7 +10,7 @@ import { HistoryComponent } from './history/history.component';
 export const routes: Routes = [
   {
     path: 'signup',
-    title: 'Signup',
+    title: 'Signup | Ecommerce',
     component: SignupComponent,
     data: {
       matomo: {
@@ -21,7 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    title: 'Login',
+    title: 'Loging | Ecommerce',
     component: LoginComponent,
     data: {
       matomo: {
@@ -31,7 +30,7 @@ export const routes: Routes = [
   },
   {
     path: 'products',
-    title: 'Products',
+    title: 'Products | Ecommerce',
     component: ProductComponent,
     canActivate: [AuthGuard],
     data: {
@@ -41,19 +40,8 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'shopping-cart',
-    title: 'Cart',
-    component: ShoppingCartComponent,
-    canActivate: [AuthGuard],
-    data: {
-      matomo: {
-        title: 'Cart',
-      } as MatomoRouteData,
-    },
-  },
-  {
     path: 'check-out',
-    title: 'Check Out',
+    title: 'Check Out | Ecommerce',
     component: CheckOutComponent,
     canActivate: [AuthGuard],
     data: {
@@ -64,7 +52,7 @@ export const routes: Routes = [
   },
   {
     path: 'history',
-    title: 'My Orders',
+    title: 'My Order | Ecommerce',
     component: HistoryComponent,
     canActivate: [AuthGuard],
     data: {

@@ -1,10 +1,13 @@
+import { DisplayService } from './../services/display.service';
+import { NotificationService } from '../services/notification.service';
+import { CartService } from '../services/cart.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component } from '@angular/core';
 import { v4 } from 'uuid';
 import { OrderService } from '../services/order.services';
 import { MatomoTracker } from 'ngx-matomo-client';
-import { ToastrService } from 'ngx-toastr';
+import { CartItem } from '../models/cart-item.model';
 
 @Component({
   selector: 'app-check-out',
@@ -13,11 +16,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CheckOutComponent {
   checkoutForm!: FormGroup;
-  shoppingCart: any = [];
+  shoppingCart: CartItem[] = [];
   total: any;
   orderNumber: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private orderService: OrderService, private tracker: MatomoTracker, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private router: Router, private cartService: CartService, private orderService: OrderService, private tracker: MatomoTracker, private notificationService: NotificationService, private displayService: DisplayService) { }
 
   ngOnInit() {
     // initialize checkOut form
@@ -30,6 +33,13 @@ export class CheckOutComponent {
     // get order data from local storage
     this.shoppingCart = JSON.parse(localStorage.getItem('cart') || '[]');
     this.total = JSON.parse(localStorage.getItem('total') || '0');
+
+    const cartObservable = this.cartService.getCartObservable();
+
+    cartObservable.subscribe((data: any) => {
+      this.total = data.total;
+      this.shoppingCart = data.cart;
+    });
 
     // if order number not in local storage, call v4() to set orderNumber and store in localStorage
     if (!localStorage.getItem('orderNumber')) {
@@ -95,20 +105,27 @@ export class CheckOutComponent {
       localStorage.removeItem('cart');
       localStorage.removeItem('total');
       localStorage.removeItem('orderNumber');
+      this.cartService.clear();
+      this.cartService.emitQuantityEvent();
       this.checkoutForm.reset();
 
       // give success notification and reroute to history page
-      this.toastr.success('Order placed successfully', '', { extendedTimeOut: 2000, timeOut: 2000 }).
-        onHidden.subscribe(() => {
-          this.router.navigate(['history']);
-        });
+      await this.notificationService.toaster('success', 'Order placed successfully', '', 2000);
+
+      localStorage.setItem('showCart', JSON.stringify(false));
+
+      this.displayService.emitCartEvent();
+      this.cartService.clear();
+      this.cartService.emitEvent();
+
+      this.router.navigate(['history']);
     }
     else {
       const outOfStock = response.data;
-      
+
       // give out of stock notification
       for (let name of outOfStock) {
-        this.toastr.warning(name + ' is out of stock', '', { extendedTimeOut: 1000, timeOut: 1000 });
+        this.notificationService.toaster('warning', name + ' is out of stock', '', 1000);
       }
     }
   }

@@ -11,12 +11,6 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ChatService {
-    private chatSubject = new Subject<boolean>();
-    private supportSubject = new Subject<boolean>();
-
-    private chatObservable = this.chatSubject.asObservable();
-    private supportObservable = this.supportSubject.asObservable();
-
     private url = 'http://localhost:3000/api/chats/';
 
     constructor(private http: HttpClient) { }
@@ -35,21 +29,5 @@ export class ChatService {
             this.http.get<any>
                 (this.url + data, { withCredentials: true })
         );
-    }
-
-    getChatObservable() : Observable<boolean> {
-        return this.chatObservable;
-    }
-    
-    emitChatEvent(hideChat: boolean) {
-        this.chatSubject.next(hideChat);
-    }
-
-    getSupportObservable() : Observable<boolean> {
-        return this.supportObservable;
-    }
-
-    emitSupportEvent(hideChat: boolean) {
-        this.supportSubject.next(hideChat);
     }
 }

@@ -1,7 +1,7 @@
 import { Socket } from 'ngx-socket-io';
 import { Component } from '@angular/core';
 import { ChatService } from '../services/chat.service';
-import { timestamp } from 'rxjs';
+import { DisplayService } from '../services/display.service';
 
 @Component({
   selector: 'app-chat',
@@ -14,7 +14,7 @@ export class ChatComponent {
   userid: any
   username: any;
 
-  constructor(private socket: Socket, private chatService: ChatService) { }
+  constructor(private socket: Socket, private chatService: ChatService, private displayService: DisplayService) { }
 
   async ngOnInit() {
     if (localStorage.getItem('username') && localStorage.getItem('userid')) {
@@ -37,7 +37,7 @@ export class ChatComponent {
         senderId: this.userid,
         room: this.username,
         text: this.message,
-        timestamp : new Date().toISOString().slice(0, 19).replace('T', ' ')
+        timestamp: new Date().toISOString().slice(0, 19).replace('T', ' ')
       };
 
       this.socket.emit('send', newMessage);
@@ -48,6 +48,10 @@ export class ChatComponent {
   }
 
   closeChat() {
-    this.chatService.emitChatEvent(true);
+    let showChat: boolean = JSON.parse(localStorage.getItem('showChat') || '0');
+    showChat = !showChat;
+    localStorage.setItem('showChat', JSON.stringify(showChat));
+
+    this.displayService.emitChatEvent();
   }
 }

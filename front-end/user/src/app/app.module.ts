@@ -13,8 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
@@ -25,14 +25,16 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CheckOutComponent } from './check-out/check-out.component';
-import { CategoryPipe } from './category.pipe';
-import { OrderNumberPipe } from './ordernumber.pipe';
+import { CategoryPipe } from '../app/pipes/category.pipe';
+import { OrderNumberPipe } from '../app/pipes/ordernumber.pipe';
 import { MatomoModule, MatomoRouteDataInterceptor, MatomoRouterModule } from 'ngx-matomo-client';
 import { SignupComponent } from './signup/signup.component';
 import { HistoryComponent } from './history/history.component';
 import { ChatComponent } from './chat/chat.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FooterComponent } from './footer/footer.component';
+import { DialogComponent } from './dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const socketIoConfig: SocketIoConfig = {
   url: 'http://localhost:3010',
@@ -56,6 +58,7 @@ const socketIoConfig: SocketIoConfig = {
     HistoryComponent,
     ChatComponent,
     FooterComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ const socketIoConfig: SocketIoConfig = {
     MatSlideToggleModule,
     MatPaginatorModule,
     ToastrModule.forRoot(),
+    MatDialogModule,
     MatomoModule
       .forRoot
       ({
@@ -81,7 +85,7 @@ const socketIoConfig: SocketIoConfig = {
       interceptors: [MatomoRouteDataInterceptor],
       trackPageTitle: false,
     }),
-    SocketIoModule.forRoot(socketIoConfig),
+    SocketIoModule.forRoot(socketIoConfig ),
     NgxPaginationModule
   ],
   providers: [

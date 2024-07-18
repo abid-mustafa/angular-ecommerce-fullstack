@@ -1,8 +1,7 @@
 .chat-popup {
     position: fixed;
-    bottom: 140px;
+    bottom: 0px;
     right: 100px;
-    border: 1px solid #ddd;
     color: black;
     z-index: 10;
     width: 400px;
@@ -10,7 +9,14 @@
     background-color: white;
     border-radius: 10px 10px 0 0;
     overflow: hidden;
-}
+    animation:  mymove 0.2s normal;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes mymove {
+    from {transform: translateY(500px);}
+    to {transform: translateY(0px);}
+  }
 
 .chat-header {
     display: flex;

@@ -1,28 +1,32 @@
-/* Split the screen in half */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 25px;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+}
+
 .split {
-  height: 100%;
   width: 50%;
-  position: fixed;
-  overflow-x: hidden;
-  padding-top: 50px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* Control the left side */
 .left {
-  left: 0;
   overflow-y: auto;
 }
 
-/* Control the right side */
 .right {
-  right: 0;
-  overflow-y: auto;
   display: flex;
+  justify-content: center;
   align-items: flex-start;
+  overflow-y: auto;
 }
 
-/* Ensure the form is centered vertically and horizontally */
 .check-out-form {
   background-color: #fff;
   padding: 20px;
@@ -38,7 +42,7 @@
   background-color: #f1f1f1;
   padding: 20px;
   margin: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -52,7 +56,7 @@
 .cart-heading {
   display: flex;
   justify-content: space-between;
-  background-color: #007bff;
+  background-color: #673ab7;
   color: white;
   border-radius: 8px 8px 0 0;
   padding: 10px;
@@ -99,8 +103,6 @@
 
 .check-out-button {
   margin-top: 20px;
-  float: right;
-  text-decoration: none;
 }
 
 .heading {
@@ -122,7 +124,7 @@
 @media (max-width: 768px) {
   .split {
     width: 100%;
-    position: relative;
+    padding: 10px;
   }
 
   .right {
@@ -130,6 +132,43 @@
   }
 }
 
-.form-field{
+.form-field {
   width: 90%;
+}
+
+.footer {
+  background-color: #3f51b5;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content p {
+  margin: 0;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
 }

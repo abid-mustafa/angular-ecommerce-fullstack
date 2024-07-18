@@ -29,11 +29,7 @@
   text-align: center;
 }
 
-.demo-data * {
-  margin: 16px 0;
-}
-
-.demo-paginator {
+.paginator {
   width: 800px;
   align-items: center;
 }

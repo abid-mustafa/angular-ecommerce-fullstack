@@ -1,3 +1,4 @@
+import { NotificationService } from './../services/notification.service';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from '@angular/router';
@@ -14,7 +15,7 @@ export class LoginComponent {
   loginForm!: FormGroup
   private readonly tracker = inject(MatomoTracker);
 
-  constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private toastr: ToastrService) { }
+  constructor(private fb: FormBuilder, private router: Router, private userService: UserService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     // if user data in local storage, assume user logged in, reroute to products page
@@ -51,7 +52,7 @@ export class LoginComponent {
     }
     else {
       // if login failed, show notification
-      this.toastr.error('Bad Credentials', '', { extendedTimeOut: 2000, timeOut: 2000 });
+      this.notificationService.toaster('error', 'Bad credentials', '', 2000);
     }
   }
 }
