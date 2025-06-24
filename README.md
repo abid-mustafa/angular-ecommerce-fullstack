@@ -18,7 +18,7 @@ This is a full-stack **e-commerce website** built during my **internship at Haba
 1. **Clone the repository**  
    ```sh
    git clone https://github.com/abid-mustafa/angular-ecommerce-complete.git 
-   cd angular-ecommerce-complete 
+   cd angular-ecommerce-fullstack 
    ```  
 2. **Backend**  
    ```sh
